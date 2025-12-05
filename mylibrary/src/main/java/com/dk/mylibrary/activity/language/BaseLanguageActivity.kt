@@ -1,8 +1,6 @@
 package com.dk.mylibrary.activity.language
 
 import android.Manifest
-import android.content.Context
-import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.res.ColorStateList
 import android.os.Build
@@ -10,16 +8,13 @@ import android.view.View
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.core.graphics.toColorInt
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dk.mylibrary.R
 import com.dk.mylibrary.base.BaseActivity
 import com.dk.mylibrary.databinding.ActivityLanguageBinding
 import com.dk.mylibrary.utils.Common
 
-abstract class BaseLanguageActivity(
-    private val languageConfig: LanguageConfig = LanguageConfig()
-) : BaseActivity<ActivityLanguageBinding>(ActivityLanguageBinding::inflate) {
+abstract class BaseLanguageActivity : BaseActivity<ActivityLanguageBinding>(ActivityLanguageBinding::inflate) {
 
     lateinit var language: String
     var flag = R.drawable.ic_english
@@ -33,15 +28,26 @@ abstract class BaseLanguageActivity(
     abstract fun reloadNativeFirstClick()
     abstract fun showNativeId1()
     abstract fun loadAdsIntro()
+    open fun getLanguageBuilder(): LanguageBuilder = LanguageBuilder()
 
     override fun initViewBase() {
+        val builder = getLanguageBuilder()
         LanguageAdapter.Companion.selected = -1
         flag = Common.getPreLanguageflag(this)
         language = Common.getLang(this).toString()
         languageName = Common.getLangName(this).toString()
-        binding.txtname.text = languageConfig.titleText
+        binding.txtname.text = builder.titleText
+        if (builder.fontTitle != null) {
+            binding.txtname.typeface = resources.getFont(builder.fontTitle!!)
+        }
+        if (builder.fontDone != null) {
+            binding.done.typeface = resources.getFont(builder.fontDone!!)
+        }
+        if(builder.backgroundScreen != null) {
+            binding.main.setBackgroundResource(builder.backgroundScreen!!)
+        }
         getBack()
-        getLanguage()
+        getLanguage(builder)
         changeLanguageDone()
         showNativeId1()
     }
@@ -50,15 +56,15 @@ abstract class BaseLanguageActivity(
         if (fromSplash) {
             checkNotification()
             binding.backArrow.visibility = View.GONE
-            binding.done.setTextColor("#A7A9A8".toColorInt())
-            binding.done.backgroundTintList = ColorStateList.valueOf("#EDE9E8".toColorInt())
+            binding.done.setTextColor(ContextCompat.getColor(this, R.color.lib_done_button_text_color_disabled))
+            binding.done.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(this, R.color.lib_done_button_background_color_disabled))
             loadAdsIntro()
         } else {
             pos = Common.getPosition(this)
             binding.backArrow.visibility = View.VISIBLE
-            // Use colors from config
-            binding.done.setTextColor(languageConfig.doneButtonTextColor.toColorInt())
-            binding.done.backgroundTintList = ColorStateList.valueOf(languageConfig.doneButtonBackgroundColor.toColorInt())
+            // Use colors from resources (có thể override trong app module)
+            binding.done.setTextColor(ContextCompat.getColor(this, R.color.lib_done_button_text_color))
+            binding.done.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(this, R.color.lib_done_button_background_color))
             binding.backArrow.setOnClickListener {
                 finish()
             }
@@ -105,7 +111,7 @@ abstract class BaseLanguageActivity(
         }
     }
 
-    private fun getLanguage() {
+    private fun getLanguage(builder: LanguageBuilder) {
         val languageList = languages
 
         adapter = LanguageAdapter(
@@ -114,8 +120,8 @@ abstract class BaseLanguageActivity(
                     if (pos == -1) {
                         reloadNativeFirstClick()
                     }
-                    binding.done.setTextColor(languageConfig.doneButtonTextColor.toColorInt())
-                    binding.done.backgroundTintList = ColorStateList.valueOf(languageConfig.doneButtonBackgroundColor.toColorInt())
+                    binding.done.setTextColor(ContextCompat.getColor(this@BaseLanguageActivity, R.color.lib_done_button_text_color))
+                    binding.done.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(this@BaseLanguageActivity, R.color.lib_done_button_background_color))
                     pos = position
                     language = name
                     languageName = languageList[position].name
@@ -124,7 +130,9 @@ abstract class BaseLanguageActivity(
                 }
             }, 
             this,
-            languageConfig
+            builder.selectedLanguageDrawable,
+            builder.unselectedLanguageDrawable,
+            builder.fontLanguageName
         )
 
         adapter?.updateData(languageList)

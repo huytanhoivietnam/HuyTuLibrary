@@ -1,21 +1,16 @@
 package com.dk.huytulibrary
 
 import com.dk.mylibrary.activity.language.BaseLanguageActivity
-import com.dk.mylibrary.activity.language.LanguageConfig
+import com.dk.mylibrary.activity.language.LanguageBuilder
 
-class LanguageActivity(languageConfig: LanguageConfig = LanguageConfig(
-        doneButtonTextColor = "#FFFFFF",
-        doneButtonBackgroundColor = "#F43D24",
-        titleText = "Language",
-        selectedLanguageSolidColor = "#FFECEC",
-        selectedLanguageStrokeColor = "#F43D24",
-        selectedLanguageStrokeWidth = 1f,
-        unselectedLanguageSolidColor = "#F5F5F5",
-        cornerRadius = 12f,
-        radioButtonCheckedColor = "#F43D24",
-        radioButtonUncheckedColor = "#D9D9D9"
-    )
-) : BaseLanguageActivity(languageConfig) {
+class LanguageActivity : BaseLanguageActivity() {
+    
+    override fun getLanguageBuilder(): LanguageBuilder {
+        return LanguageBuilder()
+            .setTitleText("Language")
+            .setFontTitle(R.font.happy_school)
+            .setFontLanguageName(R.font.happy_school)
+    }
     
     override fun nextToIntro() {
         finish()
