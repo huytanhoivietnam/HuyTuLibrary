@@ -13,7 +13,8 @@ class LanguageAdapter(
     val context: Context,
     private val selectedLanguageDrawable: Int? = null,
     private val unselectedLanguageDrawable: Int? = null,
-    private val languageNameFontFamily: Int? = null
+    private val languageNameFontFamily: Int? = null,
+    private val languageNameTextSize: Float? = null
 ) : RecyclerView.Adapter<LanguageAdapter.ViewHolder>() {
 
     companion object {
@@ -77,6 +78,10 @@ class LanguageAdapter(
         
         if (languageNameFontFamily != null) {
             binding.languageName.typeface = context.resources.getFont(languageNameFontFamily)
+        }
+        
+        languageNameTextSize?.let { textSize ->
+            binding.languageName.textSize = textSize
         }
 
         holder.itemView.setOnClickListener {

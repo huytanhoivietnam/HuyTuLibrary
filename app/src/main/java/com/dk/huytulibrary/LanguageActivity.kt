@@ -2,6 +2,8 @@ package com.dk.huytulibrary
 
 import com.dk.mylibrary.activity.language.BaseLanguageActivity
 import com.dk.mylibrary.activity.language.LanguageBuilder
+import com.dk.mylibrary.utils.addActivity
+import com.dk.mylibrary.utils.replaceActivity
 
 class LanguageActivity : BaseLanguageActivity() {
     
@@ -13,11 +15,15 @@ class LanguageActivity : BaseLanguageActivity() {
     }
     
     override fun nextToIntro() {
-        finish()
+        addActivity <MainActivity>{
+            putExtra("fromSplash", true)
+        }
     }
 
     override fun nextToHome() {
-        finish()
+        replaceActivity<MainActivity>{
+            putExtra("fromSplash", true)
+        }
     }
 
     override fun reloadNativeFirstClick() {
