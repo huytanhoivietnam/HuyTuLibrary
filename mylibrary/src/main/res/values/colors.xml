@@ -17,4 +17,5 @@
     <color name="language_text_color">#000000</color>
     <color name="language_text_item_color">#000000</color>
     <color name="language_text_item_color_selected">#000000</color>
+    <color name="button_connect_wifi">#2469DF</color>
 </resources>

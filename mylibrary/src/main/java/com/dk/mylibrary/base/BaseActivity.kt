@@ -5,8 +5,15 @@ import android.view.LayoutInflater
 import android.view.View
 import androidx.activity.addCallback
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.viewbinding.ViewBinding
+import com.dk.mylibrary.dialog.InternetErrorDialog
 import com.dk.mylibrary.utils.Common
+import com.dk.mylibrary.utils.NetworkUtils
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import java.util.Locale
 
 abstract class BaseActivity<VB : ViewBinding>(val inflater: (LayoutInflater) -> VB) :
@@ -24,9 +31,9 @@ abstract class BaseActivity<VB : ViewBinding>(val inflater: (LayoutInflater) -> 
         initViewBase()
     }
 
-//    private val internetErrorDialog by lazy {
-//        InternetErrorDialog(mContext = this)
-//    }
+    private val internetErrorDialog by lazy {
+        InternetErrorDialog(mContext = this)
+    }
 
     abstract fun initViewBase()
     open fun callBackPress() {
@@ -74,24 +81,24 @@ abstract class BaseActivity<VB : ViewBinding>(val inflater: (LayoutInflater) -> 
     open fun shouldShowInternetDialog(): Boolean = true
 
     private fun setupNetworkMonitoring() {
-//        if (!shouldShowInternetDialog()) return
-//        lifecycleScope.launch {
-//            repeatOnLifecycle(Lifecycle.State.STARTED){
-//                NetworkUtils.observeNetworkState(this@BaseActivity).collectLatest { isConnected ->
-//                    if (isConnected) {
-//                        if(internetErrorDialog.isShowing){
-//                            internetErrorDialog.dismiss()
-//                        }
-//                    } else {
-//                        showInternetDialog()
-//                    }
-//                }
-//            }
-//        }
+        if (!shouldShowInternetDialog()) return
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED){
+                NetworkUtils.observeNetworkState(this@BaseActivity).collectLatest { isConnected ->
+                    if (isConnected) {
+                        if(internetErrorDialog.isShowing){
+                            internetErrorDialog.dismiss()
+                        }
+                    } else {
+                        showInternetDialog()
+                    }
+                }
+            }
+        }
     }
 
     private fun showInternetDialog() {
-//        internetErrorDialog.show()
+        internetErrorDialog.show()
     }
 
 }

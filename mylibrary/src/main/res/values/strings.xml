@@ -2,4 +2,7 @@
 <resources>
     <string name="select_language">Select Language</string>
     <string name="apply">Apply</string>
+    <string name="no_wifi_connection">No Wifi Connection</string>
+    <string name="connect_to_wi_fi_to_proceed">No internet detected. Connect to Wi-Fi to proceed.</string>
+    <string name="connect">Connect</string>
 </resources>
