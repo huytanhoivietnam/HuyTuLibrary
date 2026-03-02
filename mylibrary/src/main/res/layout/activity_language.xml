@@ -30,7 +30,7 @@
             android:layout_marginStart="10dp"
             app:tint="@color/language_text_color" />
 
-        <TextView
+        <com.dk.mylibrary.custom_view.GradientTextView
             android:id="@+id/txtname"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -44,7 +44,10 @@
             android:text="@string/select_language"
             android:textColor="@color/language_text_color"
             android:textSize="22sp"
-            tools:ignore="RtlHardcoded" />
+            tools:ignore="RtlHardcoded"
+            app:gtv_startColor="#F80000"
+            app:gtv_endColor="#004EFF"
+            app:gtv_orientation="top_to_bottom" />
 
         <TextView
             android:id="@+id/done"

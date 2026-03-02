@@ -1,8 +1,8 @@
 package com.dk.mylibrary.dialog
 
-import android.app.Dialog
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.provider.Settings
 import com.dk.mylibrary.base.BaseDialog
 import com.dk.mylibrary.databinding.DialogInternetConnectBinding
@@ -23,9 +23,20 @@ class InternetErrorDialog(
             }
         }
     }
+
     private fun openNetworkSettings() {
-        val panelIntent = Intent(Settings.Panel.ACTION_INTERNET_CONNECTIVITY)
-        mContext.startActivity(panelIntent)
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                val panelIntent = Intent(Settings.Panel.ACTION_INTERNET_CONNECTIVITY)
+                mContext.startActivity(panelIntent)
+            } else {
+                val intent = Intent(Settings.ACTION_WIFI_SETTINGS)
+                mContext.startActivity(intent)
+            }
+        } catch (e: Exception) {
+            val intent = Intent(Settings.ACTION_SETTINGS)
+            mContext.startActivity(intent)
+        }
     }
 
 

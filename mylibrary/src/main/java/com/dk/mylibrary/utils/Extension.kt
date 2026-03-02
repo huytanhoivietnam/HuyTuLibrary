@@ -53,6 +53,18 @@ fun View.invisible() {
     visibility = View.INVISIBLE
 }
 
+fun View.fadeIn(duration: Long = 300) {
+    alpha = 0f
+    visible()
+    animate().alpha(1f).setDuration(duration).start()
+}
+
+fun View.fadeOut(duration: Long = 300) {
+    animate().alpha(0f).setDuration(duration)
+        .withEndAction { gone() }
+        .start()
+}
+
 inline fun <reified T : Activity> Context.addActivity(block: Intent.() -> Unit = {}) {
     startActivity(Intent(this, T::class.java).apply(block))
 }

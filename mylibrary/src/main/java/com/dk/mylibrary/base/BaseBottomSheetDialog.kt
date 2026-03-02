@@ -74,17 +74,6 @@ abstract class BaseBottomSheetDialog<VB : ViewBinding>(context: Context) :
 
     abstract fun initViews()
 
-
-    fun setDialogBottom() {
-//        window?.run {
-//            setLayout(
-//                WindowManager.LayoutParams.MATCH_PARENT,
-//                WindowManager.LayoutParams.WRAP_CONTENT
-//            )
-//            setGravity(Gravity.BOTTOM)
-//        }
-    }
-
     private fun setWhiteNavigationBar(dialog: Dialog) {
         val window: Window? = dialog.window
         if (window != null) {
@@ -94,7 +83,7 @@ abstract class BaseBottomSheetDialog<VB : ViewBinding>(context: Context) :
             // ...customize your dim effect here
             val navigationBarDrawable = GradientDrawable()
             navigationBarDrawable.shape = GradientDrawable.RECTANGLE
-            navigationBarDrawable.setColor("#242428".toColorInt())
+            navigationBarDrawable.setColor("#FFFFFF".toColorInt())
             val layers = arrayOf<Drawable>(dimDrawable, navigationBarDrawable)
             val windowBackground = LayerDrawable(layers)
             windowBackground.setLayerInsetTop(1, metrics.heightPixels)

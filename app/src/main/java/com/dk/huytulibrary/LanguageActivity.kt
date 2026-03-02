@@ -1,5 +1,6 @@
 package com.dk.huytulibrary
 
+import androidx.core.graphics.toColorInt
 import com.dk.mylibrary.activity.language.BaseLanguageActivity
 import com.dk.mylibrary.activity.language.LanguageBuilder
 import com.dk.mylibrary.utils.addActivity
